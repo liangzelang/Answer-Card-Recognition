@@ -1,0 +1,12 @@
+# VS2010
+Debug/
+ipch/
+*.sdf
+*.sln
+*.suo
+*.opensdf
+
+# SRC
+*.vcxproj
+*.filters
+*.user
