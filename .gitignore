@@ -10,3 +10,7 @@ ipch/
 *.vcxproj
 *.filters
 *.user
+
+# pic
+pic/
+*.jpg

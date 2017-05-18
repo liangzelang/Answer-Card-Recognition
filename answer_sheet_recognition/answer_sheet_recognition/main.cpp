@@ -15,8 +15,12 @@ vector<Point2f> dstpt(4);
 int ptflag=0;
 Mat pic;
 Mat perImage;
-
+Mat pdstImage;
+Mat pmidImage;
+Mat psrcImage;
+int threshold_value = 100;
 static void on_Mouse(int event, int x, int y, int flags, void *);
+void on_Change(int, void*);
 
 int main()
 {
@@ -31,6 +35,12 @@ int main()
 	waitKey(0);
 	return 0;
 
+}
+
+void on_Change(int,void *)
+{	
+	threshold(pmidImage, pdstImage, threshold_value, 255, 0);
+	imshow("process", pdstImage);
 }
 
 //-----------------------------------【onMouse( )函数】---------------------------------------
@@ -58,11 +68,22 @@ static void on_Mouse( int event, int x, int y, int flags, void* )
 				dstpt[3] = Point2f(0,640);
 				dstpt[2] = Point2f(480,640);
 				dstpt[1] = Point2f(480,0);
+			
 				//求取映射矩阵
 				perImage = Mat::zeros(640,480, CV_8UC3);   //这里的zeros 第一个参数是rows 行  第二是cols 列  和width（）函数定义正好相反
 				Mat transMat = getPerspectiveTransform(srcpt, dstpt);
 				warpPerspective(pic, perImage, transMat, perImage.size());	
 				imshow("fuck", perImage);
+
+				imwrite("D:\\C++程序联系文件夹（可选择性删除）\\Answer-Card-Recognition\\pic\\result.jpg",perImage);	
+
+				if(ptflag == 0)
+				{
+					psrcImage = imread("D:\\C++程序联系文件夹（可选择性删除）\\Answer-Card-Recognition\\pic\\result.jpg",1);
+					cvtColor(psrcImage, pmidImage, CV_RGB2GRAY);
+					namedWindow("process", 1);
+					createTrackbar("value", "process", &threshold_value, 255, on_Change);
+				}
 			}
 				
 			break;
@@ -70,3 +91,4 @@ static void on_Mouse( int event, int x, int y, int flags, void* )
 			break;
 	}
 }
+
