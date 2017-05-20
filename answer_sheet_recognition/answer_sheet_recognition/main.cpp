@@ -21,12 +21,11 @@ Mat psrcImage;
 int threshold_value = 100;
 static void on_Mouse(int event, int x, int y, int flags, void *);
 void on_Change(int, void*);
-
+void process_Pic();
 int main()
 {
 	Mat dstImage;
 	Mat midImage;
-
 	pic = imread("D:\\C++程序联系文件夹（可选择性删除）\\Answer-Card-Recognition\\pic\\1.jpg",1);
 	resize(pic, pic, cv::Size(480, 640));	
 	imshow("source", pic);
@@ -35,6 +34,17 @@ int main()
 	waitKey(0);
 	return 0;
 
+}
+
+void process_Pic()
+{
+	Mat rsrcImage = imread("D:\\C++程序联系文件夹（可选择性删除）\\Answer-Card-Recognition\\pic\\result.jpg",1);
+	Mat rGrayImage;
+	Mat rBinImage;
+	cvtColor(rsrcImage,rGrayImage, CV_BGR2GRAY);  //灰度化
+	//threshold(rGrayImage, rBinImage,100, 255, THRESH_BINARY);
+	threshold(rGrayImage, rBinImage, 0, 255, THRESH_OTSU);
+	imshow("binary image", rBinImage);
 }
 
 void on_Change(int,void *)
